@@ -1,4 +1,4 @@
-import { RouteConfig, MiddlewareFuncOptions, ErrorFuncOptions, BunAppOptions, FuncOptions, Param } from "./types";
+import { RouteConfig, MiddlewareFuncOptions, ErrorFuncOptions, BunAppOptions, FuncOptions, Params } from "./types";
 import { BunwayResponse } from "./response";
 import { BunwayRouter } from "./router";
 import { ServeOptions, Server } from "bun";
@@ -36,7 +36,7 @@ export class Bunway {
 		addToRouteConfig(this.routeConfig, path, func, 'ANY');
 	}
 
-	async get (path: string, func: FuncOptions) {
+	get (path: string, func: FuncOptions) {
 		addToRouteConfig(this.routeConfig, path, func, 'GET');
 	}
 
@@ -96,7 +96,7 @@ export class Bunway {
 				}
 
 				// Run catch all error route
-				if (self.errorFunction) return self.errorFunction({req, server, extra: { params: [], wildcard: '' }});
+				if (self.errorFunction) return self.errorFunction({req, server, extra: { params: {}, wildcard: '' }});
 				else return new Response('404!', { status: 404 });
 			},
 			...options
@@ -135,13 +135,11 @@ function getNCompatibleRoute (n: number, subdirs: string[], routeConfig: RouteCo
 }
 
 function arePathsCompatible (subdirs: string[], mapPath: string[]) {
-	const params: Param[] = [];
+	const params: Params = {};
 	const wildcard: string = '';
 	for (let i = 0; i < mapPath.length; i++) {
 		if (mapPath[i][0] === ':') {
-			const obj: Param = {}
-			obj[mapPath[i].slice(1)] = subdirs[i];
-			params.push(obj);
+			params[mapPath[i].slice(1)] = subdirs[i];
 			continue;
 		}
 		if (mapPath[i] === '*') return { params, wildcard: subdirs.slice(i).join('/') };
