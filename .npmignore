@@ -1,2 +1,6 @@
 src/*
 examples/
+public/*
+**/.DS_Store
+test/*
+node_modules/*

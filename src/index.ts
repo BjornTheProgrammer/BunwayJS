@@ -19,14 +19,10 @@ export class Bunway {
 			};
 		}
 	];
-	
 
-	constructor({ websocketEnabled, websocketPath }: BunAppOptions) {
-		if (websocketPath === undefined) this.websocketPath = '/ws';
-		else this.websocketPath = websocketPath;
-
-		if (websocketEnabled === undefined) this.websocketEnabled = false;
-		else this.websocketEnabled = websocketEnabled;
+	constructor({ websocketEnabled = false, websocketPath = '/ws' }: BunAppOptions) {
+		this.websocketPath = websocketPath;
+		this.websocketEnabled = websocketEnabled;
 	}
 
 	before (func: MiddlewareFuncOptions) {
@@ -74,10 +70,10 @@ export class Bunway {
 		this.errorFunction = func;
 	}
 
-	listen<BunServeOptions = ServeOptions> (options: Omit<BunServeOptions, 'fetch'>, callback: Function) {
+	listen<BunServeOptions = ServeOptions> (options?: Omit<BunServeOptions, 'fetch'>) {
 		const self = this;
 
-		Bun.serve<BunServeOptions>({
+		return Bun.serve<BunServeOptions>({
 			async fetch (req: Request, server: Server) {
 				// Run before middleware.
 				for (const middleware of self.beforeMiddleware) {
@@ -105,8 +101,6 @@ export class Bunway {
 			},
 			...options
 		});
-
-		callback();
 	}
 }
 
@@ -160,11 +154,6 @@ function arePathsCompatible (subdirs: string[], mapPath: string[]) {
 export function serveStatic (path: string): FuncOptions {
 	return async ({ req, res, extra }) => {
 		const file = Bun.file(`./${path}/${extra.wildcard}`);
-
-		console.log(`./${path}/${extra.wildcard}`);
-
-		console.log(path, extra.wildcard);
-
 
 		if (await file.exists()) res.send(new Response(file, {
 			headers: {
