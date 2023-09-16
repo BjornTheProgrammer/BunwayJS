@@ -1,0 +1,37 @@
+{
+  "name": "bunwayjs",
+  "version": "0.0.1",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "description": "A lightweight fast wrapper around Bun.serve()",
+  "license": "MIT",
+  "scripts": {
+    "build": "bun run build.ts"
+  },
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BjornTheProgrammer/BunwayJS.git"
+  },
+  "bugs": "https://github.com/BjornTheProgrammer/BunwayJS/issues",
+  "author": "Bjorn Beishline",
+  "keywords": [
+    "bun",
+    "bunway",
+    "bunwayjs",
+    "web",
+    "framework",
+    "http",
+    "middleware",
+    "websocket"
+  ],
+  "devDependencies": {
+    "bun-plugin-dts": "^0.2.0",
+    "bun-types": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  }
+}
