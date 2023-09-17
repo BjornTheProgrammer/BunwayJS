@@ -149,13 +149,14 @@ function arePathsCompatible (subdirs: string[], mapPath: string[]) {
 	return { params, wildcard };
 }
 
-export function serveStatic (path: string): FuncOptions {
+export function serveStatic (path: string, headers?: object): FuncOptions {
 	return async ({ req, res, extra }) => {
 		const file = Bun.file(`./${path}/${extra.wildcard}`);
 
 		if (await file.exists()) res.send(new Response(file, {
 			headers: {
 				"Content-Type": file.type,
+				...headers
 			},
 		}));
 	}
