@@ -161,3 +161,8 @@ export function serveStatic (path: string, headers?: object): FuncOptions {
 		}));
 	}
 }
+
+export {
+	BunwayResponse,
+	BunwayRouter
+}
